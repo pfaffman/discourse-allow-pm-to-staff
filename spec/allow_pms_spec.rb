@@ -7,10 +7,10 @@ describe TopicCreator do
   fab!(:normal_user) do
     Fabricate(:user, trust_level: TrustLevel[1], admin: false, moderator: false)
   end
-  fab!(:group) { Fabricate(:group) }
+  fab!(:group)
   fab!(:user2) { Fabricate(:user, trust_level: TrustLevel[2]) }
-  fab!(:admin) { Fabricate(:admin) }
-  fab!(:moderator) { Fabricate(:moderator) }
+  fab!(:admin)
+  fab!(:moderator)
 
   let(:pm_valid_attrs_to_admin) do
     {
