@@ -9,4 +9,3 @@ Original method was [here](https://github.com/discourse/discourse/blob/master/li
 
 To install, follow the [Install a Plugin howto](https://meta.discourse.org/t/install-a-plugin/19157?u=pfaffman).
 
-Adding sometig
