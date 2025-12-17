@@ -4,10 +4,7 @@ on:
   push:
     branches:
       - main
-      - master
-
-  schedule: 
-      - cron: 22 05 * * *
+  pull_request:
 
 jobs:
   ci:
