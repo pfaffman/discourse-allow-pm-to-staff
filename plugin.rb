@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 # name: discourse-allow-pm-to-staff
 # about: Allow pms to staff even if PMs are otherwise not allowed
-# version: 0.1
+# version: 0.2
 # authors: pfaffman
 
 after_initialize do
@@ -43,7 +43,8 @@ after_initialize do
       )
   end
 
-  add_to_class(:guardian, :can_send_private_message?) do |target, notify_moderators: false|
+  # `**` swallows keywords core adds later (e.g. private_message_context in 2026.7)
+  add_to_class(:guardian, :can_send_private_message?) do |target, notify_moderators: false, **|
     return false unless authenticated?
     target_is_user = target.is_a?(User)
     target_is_group = target.is_a?(Group)
