@@ -1,0 +1,13 @@
+name: Sync d-compat
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */6 * * *"
+  push:
+    branches:
+      - main
+
+jobs:
+  ci:
+    uses: discourse/.github/.github/workflows/create-d-compat-branch.yml@v1
