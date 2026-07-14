@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "rails_helper"
-
 describe TopicCreator do
   fab!(:user0) { Fabricate(:user, trust_level: TrustLevel[0]) }
   fab!(:normal_user) do
