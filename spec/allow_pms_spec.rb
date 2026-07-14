@@ -48,15 +48,33 @@ describe TopicCreator do
     end
 
     it "should not be possible for a new user to send private message to normal user" do
-      # staff = Group.find_by(name: "staff")
       SiteSetting.personal_message_enabled_groups = group.id
       expect do
-        TopicCreator.create(user0, Guardian.new(normal_user), pm_to_normal_user)
+        TopicCreator.create(user0, Guardian.new(user0), pm_to_normal_user)
       end.to raise_error(ActiveRecord::Rollback)
     end
-    # it "can read a group page" do
-    #   get "/g/admins.json"
-    #   expect(response.status).to eq(200)
-    # end
+
+    it "should not be possible for a new user to message staff when the plugin is disabled" do
+      SiteSetting.allow_pm_to_staff_enabled = false
+      SiteSetting.personal_message_enabled_groups = group.id
+      expect do
+        TopicCreator.create(user0, Guardian.new(user0), pm_valid_attrs_to_admin)
+      end.to raise_error(ActiveRecord::Rollback)
+    end
+
+    it "should be possible for a silenced user to message an admin" do
+      SiteSetting.personal_message_enabled_groups = group.id
+      user0.update!(silenced_till: 1.year.from_now)
+      expect(TopicCreator.create(user0, Guardian.new(user0), pm_valid_attrs_to_admin)).to be_valid
+    end
+
+    it "should not be possible to message a suspended user" do
+      SiteSetting.personal_message_enabled_groups = group.id
+      GroupUser.create(user: user2, group: group)
+      normal_user.update!(suspended_till: 1.year.from_now, suspended_at: Time.zone.now)
+      expect do
+        TopicCreator.create(user2, Guardian.new(user2), pm_to_normal_user)
+      end.to raise_error(ActiveRecord::Rollback)
+    end
   end
 end
